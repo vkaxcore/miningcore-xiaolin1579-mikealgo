@@ -1,4 +1,4 @@
-#include "jh.h"
+#include "jha.h"
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -7,7 +7,7 @@
 #include "sha3/sph_jh.h"
 
 
-void jh_hash(const char* input, char* output, uint32_t len) {
+void jha_hash(const char* input, char* output, uint32_t len) {
 
     sph_jh256_context ctx_jh;
     sph_jh256_init(&ctx_jh);

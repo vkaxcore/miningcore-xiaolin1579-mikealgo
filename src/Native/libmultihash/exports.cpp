@@ -44,7 +44,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "x22i.h"
 #include "fresh.h"
 #include "dcrypt.h"
-#include "jh.h"
+#include "jha.h"
 #include "c11.h"
 #include "Lyra2RE.h"
 #include "Lyra2.h"
@@ -68,6 +68,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "rwahash.h"
 #include "x20r.h"
 #include "x11gost.h"
+#include "flex.h"
 
 #ifdef _WIN32
 #include "blake2/ref/blake2.h"
@@ -252,7 +253,7 @@ extern "C" MODULE_API void fresh_export(const char *input, char *output, uint32_
 
 extern "C" MODULE_API void jh_export(const char *input, char *output, uint32_t input_len)
 {
-	jh_hash(input, output, input_len);
+	jha_hash(input, output, input_len);
 }
 
 extern "C" MODULE_API void c11_export(const char *input, char *output)
@@ -469,4 +470,9 @@ extern "C" MODULE_API void x20r_export(const char *input, char *output, uint32_t
 extern "C" MODULE_API void x11gost_export(const char *input, char *output, uint32_t input_len)
 {
 	x11gost_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void flex_export(const char *input, char *output, uint32_t input_len)
+{
+	flex_hash(input, output, input_len);
 }

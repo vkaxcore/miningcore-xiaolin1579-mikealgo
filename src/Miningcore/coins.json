@@ -3052,6 +3052,7 @@
             ]
         },
         "hasMasterNodes": true,
+        "hasFoundation": true,
         "explorerBlockLink": "https://pepew.mining4people.com/block/$hash$",
         "explorerTxLink": "https://pepew.mining4people.com/tx/{0}",
         "explorerAccountLink": "https://pepew.mining4people.com/address/{0}"

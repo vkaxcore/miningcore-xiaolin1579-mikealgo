@@ -61,14 +61,17 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "verthash/h2.h"
 #include "equi/equihashverify.h"
 #include "heavyhash/heavyhash.h"
-#include "skydoge.h"
-#include "yescrypt/yescrypt.h"
-#include "yespower/yespower.h"
 #include "memehash.h"
 #include "rwahash.h"
 #include "x20r.h"
 #include "x11gost.h"
 #include "flex.h"
+#include "minotaur/minotaurx.h"
+#include "skydoge.h"
+#include "yescrypt/yescrypt.h"
+#include "yespower/yespower.h"
+#include "shake/cshake.h"
+#include "shake/shake.h"
 
 #ifdef _WIN32
 #include "blake2/ref/blake2.h"
@@ -109,7 +112,27 @@ extern "C" MODULE_API void sha3_512_export(const char *input, char *output, uint
 	sha3(input, input_len, output, 64);
 }
 
-extern "C" MODULE_API void hmq17_export(const char *input, char *output, uint32_t input_len)
+extern "C" MODULE_API void cshake128_export(const unsigned char* input, uint32_t input_len, const char* name, uint32_t name_len, const char* custom, uint32_t custom_len, unsigned char* output, uint32_t output_len)
+{
+    cshakeCompute(128, input, input_len, name_len == 0 ? NULL : name, name_len, custom_len == 0 ? NULL : custom, custom_len, output, output_len);
+}
+
+extern "C" MODULE_API void cshake256_export(const unsigned char* input, uint32_t input_len, const char* name, uint32_t name_len, const char* custom, uint32_t custom_len, unsigned char* output, uint32_t output_len)
+{
+    cshakeCompute(256, input, input_len, name_len == 0 ? NULL : name, name_len, custom_len == 0 ? NULL : custom, custom_len, output, output_len);
+}
+
+extern "C" MODULE_API void shake128_export(const unsigned char* input, uint32_t input_len, unsigned char* output, uint32_t output_len)
+{
+    shakeCompute(128, input, input_len, output, output_len);
+}
+
+extern "C" MODULE_API void shake256_export(const unsigned char* input, uint32_t input_len, unsigned char* output, uint32_t output_len)
+{
+    shakeCompute(256, input, input_len, output, output_len);
+}
+
+extern "C" MODULE_API void hmq17_export(const char* input, char* output, uint32_t input_len)
 {
 	hmq17_hash(input, output, input_len);
 }
@@ -173,10 +196,10 @@ extern "C" MODULE_API void skein_export(const char *input, char *output, uint32_
 
 extern "C" MODULE_API void skein2_export(const char *input, char *output, uint32_t input_len)
 {
-	skein2_hash(input, output, input_len);
+    skein2_hash(input, output, input_len);
 }
 
-extern "C" MODULE_API void groestl_export(const char *input, char *output, uint32_t input_len)
+extern "C" MODULE_API void groestl_export(const char* input, char* output, uint32_t input_len)
 {
 	groestl_hash(input, output, input_len);
 }
@@ -196,9 +219,14 @@ extern "C" MODULE_API void blake2s_export(const char *input, char *output, uint3
 	blake2s(output, output_len == -1 ? BLAKE2S_OUTBYTES : output_len, input, input_len, NULL, 0);
 }
 
-extern "C" MODULE_API void blake2b_export(const char *input, char *output, uint32_t input_len, uint32_t output_len)
+extern "C" MODULE_API void blake2b_export(const char* input, char* output, uint32_t input_len, uint32_t output_len, const char* key, uint32_t key_len)
 {
-	blake2b(output, output_len == -1 ? BLAKE2B_OUTBYTES : output_len, input, input_len, NULL, 0);
+    blake2b(output, output_len == -1 ? BLAKE2B_OUTBYTES : output_len, input, input_len, key_len == 0 ? NULL : key, key_len);
+}
+
+extern "C" MODULE_API void blake3_export(const char* input, char* output, uint32_t input_length, const char* key, uint32_t key_len)
+{
+    blake3(input, output, input_length, key_len == 0 ? NULL : key, key_len);
 }
 
 extern "C" MODULE_API void blake3_export(const char* input, char* output, uint32_t input_length)
@@ -475,4 +503,69 @@ extern "C" MODULE_API void x11gost_export(const char *input, char *output, uint3
 extern "C" MODULE_API void flex_export(const char *input, char *output, uint32_t input_len)
 {
 	flex_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void minotaurx_export(const char* input, char* output)
+{
+    minotaurx_hash(input, output);
+}
+
+extern "C" MODULE_API void skydoge_export(const char *input, char *output, uint32_t input_len)
+{
+    skydoge_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void yescrypt_export(const char *input, char *output, uint32_t input_len)
+{
+    yescrypt_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void yescryptR8_export(const char *input, char *output, uint32_t input_len)
+{
+    yescryptR8_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void yescryptR16_export(const char *input, char *output, uint32_t input_len)
+{
+    yescryptR16_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void yescryptR32_export(const char *input, char *output, uint32_t input_len)
+{
+    yescryptR32_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void cpupower_export(const char *input, char *output, uint32_t input_len)
+{
+    cpupower_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void power2b_export(const char *input, char *output, uint32_t input_len)
+{
+    power2b_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void yespower_export(const char *input, char *output, uint32_t input_len)
+{
+    yespower_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void yespowerIC_export(const char *input, char *output, uint32_t input_len)
+{
+    yespowerIC_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void yespowerR16_export(const char *input, char *output, uint32_t input_len)
+{
+    yespowerR16_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void yespowerTIDE_export(const char *input, char *output, uint32_t input_len)
+{
+    yespowerTIDE_hash(input, output, input_len);
+}
+
+extern "C" MODULE_API void allium_export(const char *input, char *output, uint32_t input_len)
+{
+    allium_hash(input, output, input_len);
 }

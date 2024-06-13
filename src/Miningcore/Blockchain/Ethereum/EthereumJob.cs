@@ -15,7 +15,7 @@ public class EthereumJob
         Id = id;
         BlockTemplate = blockTemplate;
         this.logger = logger;
-	this.ethash = ethash;
+        this.ethash = ethash;
 
         var target = blockTemplate.Target;
         if(target.StartsWith("0x"))
@@ -52,7 +52,7 @@ public class EthereumJob
             nonces.Add(nonceLower);
         }
     }
-    
+
     public async Task<SubmitResult> ProcessShareAsync(StratumConnection worker,
         string workerName, string fullNonceHex, CancellationToken ct)
     {

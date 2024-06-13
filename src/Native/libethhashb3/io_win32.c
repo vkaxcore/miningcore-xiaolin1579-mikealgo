@@ -76,15 +76,6 @@ char* ethash_io_create_filename(
 
 bool ethash_file_size(FILE* f, size_t* ret_size)
 {
-#ifdef _WIN32
-    struct _stat64 st;
-    int fd;
-    if ((fd = _fileno(f)) == -1 || _fstat64(fd, &st) != 0) {
-        return false;
-    }
-    *ret_size = st.st_size;
-    return true;
-#else
 	struct _stat st;
 	int fd;
 	if ((fd = _fileno(f)) == -1 || _fstat(fd, &st) != 0) {
@@ -92,7 +83,6 @@ bool ethash_file_size(FILE* f, size_t* ret_size)
 	}
 	*ret_size = st.st_size;
 	return true;
-#endif
 }
 
 bool ethash_get_default_dirname(char* strbuf, size_t buffsize)

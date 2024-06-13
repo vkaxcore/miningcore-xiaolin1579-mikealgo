@@ -14,7 +14,6 @@ public class EthereumPoolConfigExtra
     /// </summary>
     public string ChainTypeOverride { get; set; }
 	
-	/// <summary>
     /// There are several reports of bad actors taking advantage of the old "Ethash Stratum V1" protocol in order to perform multiple dangerous attacks like man-in-the-middle (MITM) attacks
     /// https://braiins.com/blog/hashrate-robbery-stratum-v2-fixes-this-and-more
     /// https://eips.ethereum.org/EIPS/eip-1571

@@ -120,25 +120,25 @@ public class EthereumPayoutHandler : PayoutHandlerBase,
                         // There is a case scenario:
                         // - https://github.com/oliverw/miningcore/issues/1583#issuecomment-1383009149
                         // - https://github.com/oliverw/miningcore/discussions/1103#discussioncomment-2121240)
-                        // Where a miner with enough hash-rate power is able to mine two blocks simultaneously with the same `height`
-                        // The first block is always an uncle and the second block is a regular block
+                        // Where a miner with enough hash-rate power is able to mine multiple blocks simultaneously with the same `height`
+                        // The last block is always a regular block and all the previous ones are all uncle blocks
                         // We must handle that case carefully here, otherwise the PayoutManager will crash and no further blocks will be unlocked and no payment will be sent anymore.
                         
                         uint totalDuplicateBlock = await cf.Run(con => blockRepo.GetPoolDuplicateBlockCountByPoolHeightNoTypeAndStatusAsync(con, poolConfig.Id, Convert.ToInt64(block.BlockHeight), new[]
                         {
                             block.Status
                         }));
-                        uint totalDuplicateBlockBefore = 0;
+                        uint totalDuplicateBlockAfter = 0;
                         
                         if(totalDuplicateBlock > 1)
                         {
-                            totalDuplicateBlockBefore = await cf.Run(con => blockRepo.GetPoolDuplicateBlockBeforeCountByPoolHeightNoTypeAndStatusAsync(con, poolConfig.Id, Convert.ToInt64(block.BlockHeight), new[]
+                            totalDuplicateBlockAfter = await cf.Run(con => blockRepo.GetPoolDuplicateBlockAfterCountByPoolHeightNoTypeAndStatusAsync(con, poolConfig.Id, Convert.ToInt64(block.BlockHeight), new[]
                             {
                                 block.Status
                             }, block.Created));
                         }
                         
-                        if(totalDuplicateBlock > 1 && totalDuplicateBlockBefore < 1)
+                        if(totalDuplicateBlock > 1 && totalDuplicateBlockAfter > 0)
                         {
                             logger.Info(() => $"[{LogCategory}] Got {totalDuplicateBlock} `{block.Status}` blocks with the same blockHeight: {block.BlockHeight}");
                             
@@ -155,30 +155,37 @@ public class EthereumPayoutHandler : PayoutHandlerBase,
                         else {
                             var blockHashResponse = await rpcClient.ExecuteAsync<DaemonResponses.Block>(logger, EC.GetBlockByNumber, ct,
                                 new[] { (object) block.BlockHeight.ToStringHexWithPrefix(), true });
-                            var blockHash = blockHashResponse.Response.Hash;
-                            var baseGas = blockHashResponse.Response.BaseFeePerGas;
-                            var gasUsed = blockHashResponse.Response.GasUsed;
+                            
+                            var blockMiner = blockHashResponse.Response.Miner;
+                            
+                            // is it still block mined by us?
+                            if(string.Equals(blockMiner, poolConfig.Address, StringComparison.OrdinalIgnoreCase))
+                            {
+                                var blockHash = blockHashResponse.Response.Hash;
+                                var baseGas = blockHashResponse.Response.BaseFeePerGas;
+                                var gasUsed = blockHashResponse.Response.GasUsed;
 
-                            var burnedFee = (decimal) 0;
-                            if(extraPoolConfig?.ChainTypeOverride == "Ethereum" || extraPoolConfig?.ChainTypeOverride == "Main" || extraPoolConfig?.ChainTypeOverride == "MainPow" || extraPoolConfig?.ChainTypeOverride == "Ubiq" || extraPoolConfig?.ChainTypeOverride == "EtherOne" || extraPoolConfig?.ChainTypeOverride == "Pink" || extraPoolConfig?.ChainTypeOverride == "JibChain" || extraPoolConfig?.ChainTypeOverride == "Altcoin" || extraPoolConfig?.ChainTypeOverride == "Pom" || extraPoolConfig?.ChainTypeOverride == "MaxxChain" || extraPoolConfig?.ChainTypeOverride == "Canxium" || extraPoolConfig?.ChainTypeOverride == "Rethereum" || extraPoolConfig?.ChainTypeOverride == "Bitnet" || extraPoolConfig?.ChainTypeOverride == "OctaSpace" || extraPoolConfig?.ChainTypeOverride == "RedeV2" || extraPoolConfig?.ChainTypeOverride == "EtherChain" || extraPoolConfig?.ChainTypeOverride == "EtherGem" || extraPoolConfig?.ChainTypeOverride == "PowBlocks" || extraPoolConfig?.ChainTypeOverride == "SlayerX") 
-                                burnedFee = (baseGas * gasUsed / EthereumConstants.Wei);
+                                var burnedFee = (decimal) 0;
+                                if(extraPoolConfig?.ChainTypeOverride == "Ethereum" || extraPoolConfig?.ChainTypeOverride == "Main" || extraPoolConfig?.ChainTypeOverride == "MainPow" || extraPoolConfig?.ChainTypeOverride == "Ubiq" || extraPoolConfig?.ChainTypeOverride == "EtherOne" || extraPoolConfig?.ChainTypeOverride == "Pink" || extraPoolConfig?.ChainTypeOverride == "Hypra")
+                                    burnedFee = (baseGas * gasUsed / EthereumConstants.Wei);
 
-                            block.Hash = blockHash;
-                            block.Status = BlockStatus.Confirmed;
-                            block.ConfirmationProgress = 1;
-                            block.BlockHeight = (ulong) blockInfo.Height;
-                            block.Reward = GetBaseBlockReward(chainType, block.BlockHeight); // base reward
-                            block.Type = EthereumConstants.BlockTypeBlock;
+                                block.Hash = blockHash;
+                                block.Status = BlockStatus.Confirmed;
+                                block.ConfirmationProgress = 1;
+                                block.BlockHeight = (ulong) blockInfo.Height;
+                                block.Reward = GetBaseBlockReward(chainType, block.BlockHeight); // base reward
+                                block.Type = EthereumConstants.BlockTypeBlock;
 
-                            if(extraConfig?.KeepUncles == false)
-                                block.Reward += blockInfo.Uncles.Length * (block.Reward / 32); // uncle rewards
+                                if(extraConfig?.KeepUncles == false)
+                                    block.Reward += blockInfo.Uncles.Length * (block.Reward / 32); // uncle rewards
 
-                            if(extraConfig?.KeepTransactionFees == false && blockInfo.Transactions?.Length > 0)
-                                block.Reward += await GetTxRewardAsync(blockInfo, ct) - burnedFee;
+                                if(extraConfig?.KeepTransactionFees == false && blockInfo.Transactions?.Length > 0)
+                                    block.Reward += await GetTxRewardAsync(blockInfo, ct) - burnedFee;
 
-                            logger.Info(() => $"[{LogCategory}] Unlocked block {block.BlockHeight} worth {FormatAmount(block.Reward)}");
+                                logger.Info(() => $"[{LogCategory}] Unlocked block {block.BlockHeight} worth {FormatAmount(block.Reward)}");
 
-                            messageBus.NotifyBlockUnlocked(poolConfig.Id, block, coin);
+                                messageBus.NotifyBlockUnlocked(poolConfig.Id, block, coin);
+                            }
                         }
                     }
 
@@ -495,6 +502,41 @@ public class EthereumPayoutHandler : PayoutHandlerBase,
 
                 return SlayerXConstants.BaseRewardInitial - (SlayerXConstants.BaseRewardInitial * (SlayerXConstants.StakePercent / 100));
             
+            case GethChainType.OctaSpace:
+            case GethChainType.OctaSpaceTestnet:
+                if(height >= OctaSpaceConstants.TriangulumHardForkHeight)
+                    return OctaSpaceConstants.TriangulumBlockReward;
+                if(height >= OctaSpaceConstants.VegaHardForkHeight)
+                    return OctaSpaceConstants.VegaBlockReward;
+                if(height >= OctaSpaceConstants.BlackeyeHardForkHeight)
+                    return OctaSpaceConstants.BlackeyeBlockReward;
+                if(height >= OctaSpaceConstants.DneprHardForkHeight)
+                    return OctaSpaceConstants.DneprBlockReward;
+                if(height >= OctaSpaceConstants.MahasimHardForkHeight)
+                    return OctaSpaceConstants.MahasimBlockReward;
+                if(height >= OctaSpaceConstants.PolarisHardForkHeight)
+                    return OctaSpaceConstants.PolarisBlockReward;
+                if(height >= OctaSpaceConstants.SpringwaterHardForkHeight)
+                    return OctaSpaceConstants.SpringwaterBlockReward;
+                if(height >= OctaSpaceConstants.ZagamiHardForkHeight)
+                    return OctaSpaceConstants.ZagamiBlockReward;
+                if(height >= OctaSpaceConstants.OldenburgHardForkHeight)
+                    return OctaSpaceConstants.OldenburgBlockReward;
+                if(height >= OctaSpaceConstants.ArcturusHardForkHeight)
+                    return OctaSpaceConstants.ArcturusBlockReward;
+                
+               return OctaSpaceConstants.BaseRewardInitial;
+
+            case GethChainType.Hypra:
+                if(height >= HypraConstants.LondonHeight)
+                    return HypraConstants.LondonBlockReward;
+                if(height >= HypraConstants.ArrowGlacierHeight)
+                    return HypraConstants.ArrowGlacierBlockReward;
+                if(height >= HypraConstants.GrayGlacierHeight)
+                    return HypraConstants.GrayGlacierBlockReward;
+
+               return HypraConstants.BaseRewardInitial;
+            
             default:
                 throw new Exception("Unable to determine block reward: Unsupported chain type");
         }
@@ -552,7 +594,7 @@ public class EthereumPayoutHandler : PayoutHandlerBase,
                 reward = 0;
                 break;
 
-            case GethChainType.Rethereum:
+            case GethChainType.Hypra:
                 reward = 0.1m;
                 break;
 

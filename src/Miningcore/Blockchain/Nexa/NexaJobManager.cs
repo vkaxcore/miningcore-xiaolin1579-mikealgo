@@ -25,7 +25,7 @@ public class NexaJobManager : BitcoinJobManagerBase<NexaJob>
         IMasterClock clock,
         IMessageBus messageBus,
         IExtraNonceProvider extraNonceProvider) :
-        base(ctx, clock, messageBus, extraNonceProvider, true)
+        base(ctx, clock, messageBus, extraNonceProvider)
     {
     }
 

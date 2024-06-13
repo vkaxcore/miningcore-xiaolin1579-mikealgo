@@ -34,6 +34,19 @@ public partial class AlephiumCoinTemplate
     {
         return "Blake3";
     }
+
+    #endregion
+}
+
+public partial class BeamCoinTemplate
+{
+    #region Overrides of CoinTemplate
+
+    public override string GetAlgorithmName()
+    {
+        return "BeamHash";
+    }
+
     #endregion
 }
 
@@ -200,10 +213,22 @@ public partial class CryptonoteCoinTemplate
     #endregion
 }
 
-public partial class EthereumCoinTemplate
+public partial class ErgoCoinTemplate
 {
     #region Overrides of CoinTemplate
 
+    public override string GetAlgorithmName()
+    {
+        return "Autolykos";
+    }
+
+    #endregion
+}
+
+public partial class EthereumCoinTemplate
+{
+    #region Overrides of CoinTemplate
+    
     public EthereumCoinTemplate()
     {
         ethashLightValue = new Lazy<IEthashLight>(() =>
@@ -224,23 +249,32 @@ public partial class EthereumCoinTemplate
     #endregion
 }
 
-public partial class ErgoCoinTemplate
+public partial class KaspaCoinTemplate
 {
     #region Overrides of CoinTemplate
 
     public override string GetAlgorithmName()
     {
-        return "Autolykos";
+        switch(Symbol)
+        {
+            case "KLS":
+                return "Karlsenhash";
+            case "PYI":
+                return "Pyrinhash";
+            default:
+                // TODO: return variant
+                return "kHeavyHash";
+        }
     }
 
     #endregion
 }
 
-public partial class ProgpowTemplate
+public partial class ProgpowCoinTemplate
 {
     #region Overrides of CoinTemplate
     
-    public ProgpowTemplate() : base()
+    public ProgpowCoinTemplate() : base()
     {
         progpowLightValue = new Lazy<IProgpowLight>(() =>
             ProgpowFactory.GetProgpow(ComponentContext, Progpower));

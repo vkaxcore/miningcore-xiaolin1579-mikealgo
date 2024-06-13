@@ -188,7 +188,7 @@ public class ProgpowJob : BitcoinJob
         Contract.RequiresNonNull(progpowHasher);
         Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(jobId));
 
-        this.coin = pc.Template.As<ProgpowTemplate>();
+        this.coin = pc.Template.As<ProgpowCoinTemplate>();
         this.txVersion = coin.CoinbaseTxVersion;
         this.network = network;
         this.clock = clock;
@@ -238,14 +238,11 @@ public class ProgpowJob : BitcoinJob
         if(coin.HasPayee)
             payeeParameters = BlockTemplate.Extra.SafeExtensionDataAs<PayeeBlockTemplateExtra>();
 
-        if(coin.HasFounderFee)
+        if (coin.HasFounderFee)
             founderParameters = BlockTemplate.Extra.SafeExtensionDataAs<FounderBlockTemplateExtra>();
 
-        if(coin.HasMinerFund)
+        if (coin.HasMinerFund)
             minerFundParameters = BlockTemplate.Extra.SafeExtensionDataAs<MinerFundTemplateExtra>("coinbasetxn", "minerfund");
-
-		if(coin.HasFounderValue)
-			FounderValueParams = BlockTemplate.Extra.SafeExtensionDataAs<FounderValueBlockTemplateExtra>();
 
         this.coinbaseHasher = coinbaseHasher;
         this.headerHasher = headerHasher;

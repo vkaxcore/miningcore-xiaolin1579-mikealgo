@@ -39,7 +39,7 @@ public class EthereumPool : PoolBase
 
     private EthereumJobManager manager;
     private EthereumCoinTemplate coin;
-	private EthereumPoolConfigExtra extraPoolConfig;
+    private EthereumPoolConfigExtra extraPoolConfig;
 
     #region // Protocol V2 handlers - https://github.com/nicehash/Specifications/blob/master/EthereumStratum_NiceHash_v1.0.0.txt
 
@@ -364,7 +364,7 @@ public class EthereumPool : PoolBase
     public override void Configure(PoolConfig pc, ClusterConfig cc)
     {
         coin = pc.Template.As<EthereumCoinTemplate>();
-		extraPoolConfig = pc.Extra.SafeExtensionDataAs<EthereumPoolConfigExtra>();
+        extraPoolConfig = pc.Extra.SafeExtensionDataAs<EthereumPoolConfigExtra>();
 
         base.Configure(pc, cc);
     }
@@ -487,7 +487,7 @@ public class EthereumPool : PoolBase
                     break;
 
                 // V1 Stratum methods
-				// There are several reports of bad actors taking advantage of the old "Ethash Stratum V1" protocol in order to perform multiple dangerous attacks like man-in-the-middle (MITM) attacks
+                // There are several reports of bad actors taking advantage of the old "Ethash Stratum V1" protocol in order to perform multiple dangerous attacks like man-in-the-middle (MITM) attacks
                 // https://braiins.com/blog/hashrate-robbery-stratum-v2-fixes-this-and-more
                 // https://eips.ethereum.org/EIPS/eip-1571
                 // https://github.com/AndreaLanfranchi/EthereumStratum-2.0.0/issues/10#issuecomment-595053258
@@ -508,7 +508,6 @@ public class EthereumPool : PoolBase
                     else
                     {
                         EnsureProtocolVersion(context, 1);
-
                         logger.Warn(() => $"Use of Ethash Stratum V1 method: {request.Method}");
                         await OnGetWorkAsync(connection, tsRequest);
                     }
@@ -524,7 +523,6 @@ public class EthereumPool : PoolBase
                     else
                     {
                         EnsureProtocolVersion(context, 1);
-
                         logger.Warn(() => $"Use of Ethash Stratum V1 method: {request.Method}");
                         await OnSubmitAsync(connection, tsRequest, ct, true);
                     }

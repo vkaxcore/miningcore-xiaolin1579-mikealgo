@@ -4,7 +4,6 @@ using Miningcore.Blockchain.Bitcoin.Configuration;
 using Miningcore.Blockchain.Bitcoin.DaemonResponses;
 using Miningcore.Blockchain.Progpow.Custom.Evrmore;
 using Miningcore.Blockchain.Progpow.Custom.Firo;
-using Miningcore.Blockchain.Progpow.Custom.Kiiro;
 using Miningcore.Configuration;
 using Miningcore.Contracts;
 using Miningcore.Crypto;
@@ -30,7 +29,7 @@ public class ProgpowJobManager : BitcoinJobManagerBase<ProgpowJob>
     {
     }
 
-    private ProgpowTemplate coin;
+    private ProgpowCoinTemplate coin;
 
     private async Task<RpcResponse<BlockTemplate>> GetBlockTemplateAsync(CancellationToken ct)
     {
@@ -198,7 +197,7 @@ public class ProgpowJobManager : BitcoinJobManagerBase<ProgpowJob>
 
     public override void Configure(PoolConfig pc, ClusterConfig cc)
     {
-        coin = pc.Template.As<ProgpowTemplate>();
+        coin = pc.Template.As<ProgpowCoinTemplate>();
         extraPoolConfig = pc.Extra.SafeExtensionDataAs<BitcoinPoolConfigExtra>();
         extraPoolPaymentProcessingConfig = pc.PaymentProcessing?.Extra?.SafeExtensionDataAs<BitcoinPoolPaymentProcessingConfigExtra>();
 

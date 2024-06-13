@@ -88,5 +88,4 @@ public static class ProgpowUtils
 
         return string.Format("{0:x64}", NewTarget);
     }
-
 }

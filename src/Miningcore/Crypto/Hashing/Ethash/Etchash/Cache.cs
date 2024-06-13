@@ -27,7 +27,7 @@ public class Cache : IEthashCache
     public ulong Epoch { get; }
     private string dagDir;
     public DateTime LastUsed { get; set; }
-
+    
     public static unsafe string GetDefaultdagDirectory()
     {
         var chars = new byte[512];
@@ -49,7 +49,7 @@ public class Cache : IEthashCache
 
         return null;
     }
-
+    
     public void Dispose()
     {
         if(handle != IntPtr.Zero)
@@ -64,7 +64,7 @@ public class Cache : IEthashCache
             {
                 EtcHash.ethash_light_delete(handle);
             }
-
+            
             handle = IntPtr.Zero;
         }
     }
@@ -86,32 +86,42 @@ public class Cache : IEthashCache
                         this.hardForkBlock = hardForkBlock;
                         var started = DateTime.Now;
                         var block = Epoch * epochLength;
+
                         // Full DAG
                         if(!string.IsNullOrEmpty(dagDir))
                         {
                             logger.Debug(() => $"Generating DAG for epoch {Epoch}");
                             logger.Debug(() => $"Epoch length used: {epochLength}");
+
                             // Generate a temporary cache
                             var light = EtcHash.ethash_light_new(block, hardForkBlock);
+
                             // Generate the actual DAG
                             handle = EtcHash.ethash_full_new(dagDir, light, hardForkBlock, progress =>
                             {
                                 logger.Info(() => $"Generating DAG for epoch {Epoch}: {progress}%");
+
                                 return !ct.IsCancellationRequested ? 0 : 1;
                             });
+
                             if(handle == IntPtr.Zero)
                                 throw new OutOfMemoryException("ethash_full_new IO or memory error");
+
                             if(light != IntPtr.Zero)
                                 EthHash.ethash_light_delete(light);
+
                             logger.Info(() => $"Done generating DAG for epoch {Epoch} after {DateTime.Now - started}");
                         }
                         // Light Cache
                         else
                         {
                             logger.Debug(() => $"Generating cache for epoch {Epoch}");
+
                             handle = EtcHash.ethash_light_new(block, hardForkBlock);
+
                             logger.Debug(() => $"Done generating cache for epoch {Epoch} after {DateTime.Now - started}");
                         }
+
                         isGenerated = true;
                     }
                 }
@@ -129,7 +139,7 @@ public class Cache : IEthashCache
         result = null;
 
         var value = new EtcHash.ethash_return_value();
-
+        
         // Full DAG
         if(!string.IsNullOrEmpty(dagDir))
         {

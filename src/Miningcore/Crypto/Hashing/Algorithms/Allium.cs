@@ -4,7 +4,6 @@ using Miningcore.Native;
 namespace Miningcore.Crypto.Hashing.Algorithms;
 
 [Identifier("allium")]
-
 public unsafe class Allium : IHashAlgorithm
 {
     public void Digest(ReadOnlySpan<byte> data, Span<byte> result, params object[] extra)

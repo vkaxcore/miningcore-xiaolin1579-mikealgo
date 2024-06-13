@@ -3,12 +3,14 @@ using Autofac;
 using Miningcore.Api;
 using Miningcore.Banning;
 using Miningcore.Blockchain.Alephium;
+using Miningcore.Blockchain.Beam;
 using Miningcore.Blockchain.Bitcoin;
 using Miningcore.Blockchain.Conceal;
 using Miningcore.Blockchain.Cryptonote;
 using Miningcore.Blockchain.Equihash;
 using Miningcore.Blockchain.Ergo;
 using Miningcore.Blockchain.Ethereum;
+using Miningcore.Blockchain.Kaspa;
 using Miningcore.Blockchain.Nexa;
 using Miningcore.Blockchain.Progpow;
 using Miningcore.Configuration;
@@ -85,6 +87,18 @@ public class AutofacModule : Module
                 t.GetInterfaces().Any(i => i.IsAssignableFrom(typeof(IHashAlgorithm))))
             .Named<IHashAlgorithm>(t=> t.GetCustomAttributes<IdentifierAttribute>().First().Name)
             .PropertiesAutowired();
+        
+        builder.RegisterAssemblyTypes(ThisAssembly)
+            .Where(t => t.GetCustomAttributes<IdentifierAttribute>().Any() &&
+                t.GetInterfaces().Any(i => i.IsAssignableFrom(typeof(IEthashLight))))
+            .Named<IEthashLight>(t => t.GetCustomAttributes<IdentifierAttribute>().First().Name)
+            .PropertiesAutowired();
+
+        builder.RegisterAssemblyTypes(ThisAssembly)
+            .Where(t => t.GetCustomAttributes<IdentifierAttribute>().Any() &&
+                t.GetInterfaces().Any(i => i.IsAssignableFrom(typeof(IProgpowLight))))
+            .Named<IProgpowLight>(t => t.GetCustomAttributes<IdentifierAttribute>().First().Name)
+            .PropertiesAutowired();
 
         builder.RegisterAssemblyTypes(ThisAssembly)
             .Where(t => t.IsAssignableTo<EquihashSolver>())
@@ -160,7 +174,17 @@ public class AutofacModule : Module
         builder.RegisterType<PROPPaymentScheme>()
             .Keyed<IPayoutScheme>(PayoutScheme.PROP)
             .SingleInstance();
+        
+        //////////////////////
+        // Alephium
 
+        builder.RegisterType<AlephiumJobManager>();
+        
+        //////////////////////
+        // Beam
+
+        builder.RegisterType<BeamJobManager>();
+        
         //////////////////////
         // Alephium
         builder.RegisterType<AlephiumJobManager>();
@@ -169,7 +193,7 @@ public class AutofacModule : Module
         // Bitcoin and family
 
         builder.RegisterType<BitcoinJobManager>();
-        
+
         //////////////////////
         // Conceal
 
@@ -181,11 +205,6 @@ public class AutofacModule : Module
         builder.RegisterType<CryptonoteJobManager>();
 
         //////////////////////
-        // Ethereum
-
-        builder.RegisterType<EthereumJobManager>();
-
-        //////////////////////
         // ZCash
 
         builder.RegisterType<EquihashJobManager>();
@@ -193,10 +212,18 @@ public class AutofacModule : Module
         //////////////////////
         // Ergo
 
-        builder.RegisterType<EquihashJobManager>();
         builder.RegisterType<ErgoJobManager>();
 
         //////////////////////
+        // Ethereum
+
+        builder.RegisterType<EthereumJobManager>();
+        
+        //////////////////////
+        // Kaspa
+
+        builder.RegisterType<KaspaJobManager>();
+
         // Progpow
 
         builder.RegisterType<ProgpowJobManager>();

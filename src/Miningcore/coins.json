@@ -2831,6 +2831,27 @@
         "explorerAccountLink": "https://explorer.nexa.org/address/{0}",
         "payoutDecimalPlaces": 2
     },
+    "nexa": {
+        "name": "Nexa",
+        "canonicalName": "Nexa",
+        "symbol": "NEXA",
+        "family": "nexa",
+        "website": "https://www.nexa.org/",
+        "github": "https://gitlab.com/nexa/nexa",
+        "explorer": "https://explorer.nexa.org/",
+        "market": "https://www.coingecko.com/en/coins/nexacoin",
+        "twitter": "https://twitter.com/nexamoney",
+        "telegram": "https://t.me/nexacoin",
+        "discord": "https://discord.com/invite/2yQNsZV6EJ",
+        "headerHasher": {
+            "hash": "nexapow"
+        },
+        "explorerBlockLink": "https://explorer.nexa.org/block-height/$height$",
+        "explorerTxLink": "https://explorer.nexa.org/tx/{0}",
+        "explorerAccountLink": "https://explorer.nexa.org/address/{0}",
+        "forcePoolAddressDestinationWithPubKey": true,
+        "payoutDecimalPlaces": 2
+    },
     "note-blockchain": {
         "name": "Note Blockchain",
         "canonicalName": "Note-Blockchain",
@@ -3611,15 +3632,13 @@
     },
     "ravencoin": {
         "name": "Ravencoin",
-        "canonicalName": "Ravencoin",
         "symbol": "RVN",
         "family": "progpow",
-        "progpower": "kawpow",
-        "website": "https://www.bitcoin.org/",
-        "market": "https://coinmarketcap.com/currencies/bitcoin/",
-        "twitter": "https://twitter.com/bitcoin",
-        "telegram": "",
-        "discord": "",
+        "website": "https://ravencoin.org/",
+        "market": "https://coinmarketcap.com/currencies/ravencoin/",
+        "twitter": "https://twitter.com/Ravencoin",
+        "telegram": "https://t.me/RavencoinDev",
+        "discord": "https://discordapp.com/invite/jn6uhur",
         "coinbaseHasher": {
             "hash": "sha256d"
         },
@@ -3635,6 +3654,7 @@
             ]
         },
         "shareMultiplier": 1,
+        "progpower": "kawpow",
         "explorerBlockLink": "https://ravencoin.network/rvn/block/$hash$",
         "explorerTxLink": "https://ravencoin.network/rvn/transaction/{0}",
         "explorerAccountLink": "https://ravencoin.network/rvn/address/{0}"
@@ -3811,6 +3831,29 @@
         "explorerBlockLink": "https://explorer.reaction.network/block/$hash$",
         "explorerTxLink": "https://explorer.reaction.network/tx/{0}",
         "explorerAccountLink": "https://explorer.reaction.network/address/{0}"
+    },
+    "pulsar": {
+        "name": "Pulsar",
+        "symbol": "PLSR",
+        "family": "bitcoin",
+        "website": "https://pulsarcoin.org/",
+        "market": "https://www.coingecko.com/en/coins/pulsar-coin",
+        "twitter": "https://www.twitter.com/PulsarCoin",
+        "discord": "https://discord.gg/7feEVsvDj9",
+        "coinbaseHasher": {
+            "hash": "sha256d"
+        },
+        "headerHasher": {
+            "hash": "minotaurx"
+        },
+        "blockHasher": {
+            "hash": "reverse",
+            "args": [ { "hash": "minotaurx" } ]
+        },
+        "isPseudoPoS": true,
+        "explorerBlockLink": "https://explorer.pulsarcoin.org/block/$height$",
+        "explorerTxLink": "https://explorer.pulsarcoin.org/tx/{0}",
+        "explorerAccountLink": "https://explorer.pulsarcoin.org/address/{0}"
     },
     "bitoreum": {
         "name": "Bitoreum",
@@ -5563,7 +5606,11 @@
                 "solutionPreambleSize": 3,
                 "solver": {
                     "hash": "equihash",
-                    "args": [48, 5, "Verushash"]
+                    "args": [
+                        48,
+                        5,
+                        "Verushash"
+                    ]
                 },
                 "coinbaseTxNetwork": "regtest",
                 "payFoundersReward": false
@@ -5985,18 +6032,32 @@
         "explorerTxLink": "http://explorer.zensystem.io/transactions/{0}",
         "explorerAccountLink": "http://explorer.zensystem.io/accounts/{0}"
     },
+    "beam": {
+        "name": "Beam",
+        "canonicalName": "Beam",
+        "symbol": "BEAM",
+        "family": "beam",
+        "website": "https://beam.mw/",
+        "market": "",
+        "twitter": "https://twitter.com/beamprivacy",
+        "telegram": "https://t.me/BeamPrivacy",
+        "discord": "http://discord.gg/BHZvAhg",
+        "explorerBlockLink": "https://explorer.beam.mw/block/$hash$",
+        "explorerTxLink": "https://explorer.beam.mw/?searched_by={0}"
+    },
     "monero": {
         "name": "Monero",
         "canonicalName": "Monero",
         "symbol": "XMR",
         "family": "cryptonote",
-        "website": "",
-        "market": "",
-        "twitter": "",
+        "website": "https://www.getmonero.org/",
+        "market": "https://coinmarketcap.com/currencies/monero",
+        "twitter": "https://twitter.com/monero",
         "telegram": "",
         "discord": "",
         "hash": "randomx",
         "hashVariant": 0,
+        "blobType": 0,
         "smallestUnit": 1000000000000,
         "addressPrefix": 18,
         "addressPrefixStagenet": 24,
@@ -6022,6 +6083,7 @@
         "discord": "http://discord.conceal.network/",
         "hash": "cn-gpu",
         "hashVariant": 0,
+        "blobType": 0,
         "difficultyTarget": 120,
         "smallestUnit": 1000000,
         "addressPrefix": 31444,
@@ -6030,6 +6092,32 @@
         "addressPrefixIntegratedTestnet": 31444,
         "explorerBlockLink": "https://explorer.conceal.network/index.html?hash=$hash$#blockchain_block",
         "explorerTxLink": "https://explorer.conceal.network/index.html?hash={0}#blockchain_transaction"
+    },
+    "zephyr": {
+        "name": "Zephyr",
+        "canonicalName": "Zephyr",
+        "symbol": "ZEPH",
+        "family": "cryptonote",
+        "website": "https://www.zephyrprotocol.com/",
+        "market": "https://www.coingecko.com/en/coins/zephyr-protocol",
+        "twitter": "https://twitter.com/zephyr_org",
+        "telegram": "https://t.me/zephyrprotocol",
+        "discord": "https://discord.gg/y4mzbDYSqQ",
+        "hash": "randomx",
+        "hashVariant": 0,
+        "blobType": 13,
+        "smallestUnit": 1000000000000,
+        "addressPrefix": 26375690432,
+        "addressPrefixTestnet": 3362369,
+        "addressPrefixStagenet": 3329601,
+        "addressPrefixIntegrated": 52873205952,
+        "addressPrefixIntegratedTestnet": 45352160833,
+        "addressPrefixIntegratedStagenet": 29241806401,
+        "subAddressPrefix": 148723904,
+        "subAddressPrefixTestnet": 253742657,
+        "subAddressPrefixStagenet": 249515585,
+        "explorerBlockLink": "https://explorer.zephyrprotocol.com/block/$height$",
+        "explorerTxLink": "https://explorer.zephyrprotocol.com/tx/{0}"
     },
     "callisto": {
         "name": "Callisto Network",
@@ -6047,7 +6135,8 @@
             "uncle": "https://explorer.callisto.network/blocks/$height$"
         },
         "explorerTxLink": "https://explorer.callisto.network/tx/{0}",
-        "explorerAccountLink": "https://explorer.callisto.network/address/{0}"
+        "explorerAccountLink": "https://explorer.callisto.network/address/{0}",
+        "ethasher": "ethash"
     },
     "ethereum": {
         "name": "Ethereum",
@@ -6065,7 +6154,8 @@
             "uncle": "https://etherscan.io/uncle/$height$"
         },
         "explorerTxLink": "https://etherscan.io/tx/{0}",
-        "explorerAccountLink": "https://etherscan.io/address/{0}"
+        "explorerAccountLink": "https://etherscan.io/address/{0}",
+        "ethasher": "ethash"
     },
     "ethereumclassic": {
         "name": "Ethereum Classic",
@@ -6083,7 +6173,8 @@
             "uncle": "https://blockscout.com/etc/mainnet/block/$height$"
         },
         "explorerTxLink": "https://blockscout.com/etc/mainnet/tx/{0}",
-        "explorerAccountLink": "https://blockscout.com/etc/mainnet/address/{0}"
+        "explorerAccountLink": "https://blockscout.com/etc/mainnet/address/{0}",
+        "ethasher": "etchash"
     },
     "ethereum-pow": {
         "name": "EthereumPoW",
@@ -6101,7 +6192,8 @@
             "uncle": "https://www.oklink.com/en/ethw/uncle/$height$"
         },
         "explorerTxLink": "https://www.oklink.com/en/ethw/tx/{0}",
-        "explorerAccountLink": "https://www.oklink.com/en/ethw/address/{0}"
+        "explorerAccountLink": "https://www.oklink.com/en/ethw/address/{0}",
+        "ethasher": "ethash"
     },
     "etherone": {
         "name": "EtherOne",
@@ -6119,7 +6211,26 @@
             "uncle": "https://blockscout.etherone.one/uncles/$height$"
         },
         "explorerTxLink": "https://blockscout.etherone.one/tx/{0}",
-        "explorerAccountLink": "https://blockscout.etherone.one/address/{0}"
+        "explorerAccountLink": "https://blockscout.etherone.one/address/{0}",
+        "ethasher": "ethash"
+    },
+        "octaspace": {
+        "name": "OctaSpace",
+        "canonicalName": "Octa.Space",
+        "symbol": "OCTA",
+        "family": "ethereum",
+        "website": "https://octa.space/",
+        "market": "https://coinmarketcap.com/currencies/octaspace/",
+        "twitter": "https://twitter.com/octa_space",
+        "telegram": "https://t.me/octa_space",
+        "discord": "https://discord.gg/octaspace",
+        "explorerBlockLinks": {
+            "block": "https://explorer.octa.space/block/$height$",
+            "uncle": "https://explorer.octa.space/block/$height$"
+        },
+        "explorerTxLink": "https://explorer.octa.space/tx/{0}",
+        "explorerAccountLink": "https://explorer.octa.space/address/{0}",
+        "ethasher": "ethash"
     },
     "pinkchain": {
         "name": "PinkChain",
@@ -6137,12 +6248,31 @@
             "uncle": "https://pinkscan.org/uncle/$height$"
         },
         "explorerTxLink": "https://pinkscan.org/tx/{0}",
-        "explorerAccountLink": "https://pinkscan.org/address/{0}"
+        "explorerAccountLink": "https://pinkscan.org/address/{0}",
+        "ethasher": "ethash"
+    },
+    "hypra": {
+        "name": "Hypra",
+        "canonicalName": "Hypra",
+        "symbol": "HYP",
+        "family": "ethereum",
+        "website": "https://www.hypra.network/",
+        "market": "",
+        "twitter": "",
+        "telegram": "",
+        "discord": "https://discord.gg/xCB4AJDEFb",
+        "explorerBlockLinks": {
+            "block": "https://explorer.hypra.network/block/$height$",
+            "uncle": "https://explorer.hypra.network/block/$hash$"
+        },
+        "explorerTxLink": "https://explorer.hypra.network/tx/{0}",
+        "explorerAccountLink": "https://explorer.hypra.network/address/{0}",
+        "ethasher": "ethashb3"
     },
     "ubiq": {
         "name": "Ubiq",
         "canonicalName": "Ubiq",
-        "symbol": "UBIQ",
+        "symbol": "UBQ",
         "family": "ethereum",
         "ethasher": "ubqhash",
         "website": "https://ubiqsmart.com/",
@@ -6155,7 +6285,8 @@
             "uncle": "https://ubiqscan.io/uncle/$height$"
         },
         "explorerTxLink": "https://ubiqscan.io/tx/{0}",
-        "explorerAccountLink": "https://ubiqscan.io/address/{0}"
+        "explorerAccountLink": "https://ubiqscan.io/address/{0}",
+        "ethasher": "ubqhash"
     },
     "jibchain": {
         "name": "JIB Chain",
@@ -6413,13 +6544,69 @@
         "canonicalName": "Ergo",
         "symbol": "ERG",
         "family": "ergo",
-        "website": "",
+        "website": "https://ergoplatform.org/",
         "market": "",
-        "twitter": "",
-        "telegram": "",
-        "discord": "",
+        "twitter": "https://twitter.com/Ergo_Platform",
+        "telegram": "https://t.me/ergoplatform",
+        "discord": "https://discord.gg/RC8M4Bkgsy",
         "explorerBlockLink": "https://explorer.ergoplatform.com/en/blocks/$hash$",
         "explorerTxLink": "https://explorer.ergoplatform.com/en/transactions/{0}",
         "explorerAccountLink": "https://explorer.ergoplatform.com/en/addresses/{0}"
+    },
+    "alephium": {
+        "name": "Alephium",
+        "canonicalName": "Alephium",
+        "symbol": "ALPH",
+        "family": "alephium",
+        "website": "https://alephium.org/",
+        "market": "https://coinmarketcap.com/currencies/alephium/",
+        "twitter": "https://twitter.com/alephium",
+        "telegram": "https://t.me/alephiumgroup",
+        "discord": "https://discord.gg/JErgRBfRSB",
+        "explorerBlockLink": "https://explorer.alephium.org/blocks/$hash$",
+        "explorerTxLink": "https://explorer.alephium.org/transactions/{0}",
+        "explorerAccountLink": "https://explorer.alephium.org/addresses/{0}"
+    },
+    "kaspa": {
+        "name": "Kaspa",
+        "canonicalName": "Kaspa",
+        "symbol": "KAS",
+        "family": "kaspa",
+        "website": "https://kaspa.org/",
+        "market": "https://coinmarketcap.com/currencies/kaspa/",
+        "twitter": "https://twitter.com/KaspaCurrency",
+        "telegram": "https://t.me/Kaspaenglish",
+        "discord": "https://discord.gg/kS3SK5F36R",
+        "explorerBlockLink": "https://explorer.kaspa.org/blocks/$hash$",
+        "explorerTxLink": "https://explorer.kaspa.org/txs/{0}",
+        "explorerAccountLink": "https://explorer.kaspa.org/addresses/{0}"
+    },
+    "karlsencoin": {
+        "name": "Karlsencoin",
+        "canonicalName": "Karlsencoin",
+        "symbol": "KLS",
+        "family": "kaspa",
+        "website": "https://karlsencoin.com/",
+        "market": "",
+        "twitter": "https://twitter.com/karlsennetwork",
+        "telegram": "https://t.me/KarlsenNetwork",
+        "discord": "https://discord.com/invite/NasfjsEm",
+        "explorerBlockLink": "https://explorer.karlsencoin.com/blocks/$hash$",
+        "explorerTxLink": "https://explorer.karlsencoin.com/txs/{0}",
+        "explorerAccountLink": "https://explorer.karlsencoin.com/addresses/{0}"
+    },
+    "pyrin": {
+        "name": "Pyrin",
+        "canonicalName": "Pyrin",
+        "symbol": "PYI",
+        "family": "kaspa",
+        "website": "https://pyrin.network/",
+        "market": "",
+        "twitter": "https://twitter.com/pyrin_network",
+        "telegram": "https://t.me/pyrin_network",
+        "discord": "https://discord.gg/QQgWRntF",
+        "explorerBlockLink": "https://explorer.pyrin.network/blocks/$hash$",
+        "explorerTxLink": "https://explorer.pyrin.network/txs/{0}",
+        "explorerAccountLink": "https://explorer.pyrin.network/addresses/{0}"
     }
 }

@@ -40,7 +40,7 @@ public class ProgpowPool : PoolBase
     private ProgpowJobParams currentJobParams;
     private long currentJobId;
     private ProgpowJobManager manager;
-    private ProgpowTemplate coin;
+    private ProgpowCoinTemplate coin;
     
     private string createEncodeTarget(double difficulty)
     {
@@ -319,7 +319,7 @@ public class ProgpowPool : PoolBase
 
     public override void Configure(PoolConfig pc, ClusterConfig cc)
     {
-        coin = pc.Template.As<ProgpowTemplate>();
+        coin = pc.Template.As<ProgpowCoinTemplate>();
 
         base.Configure(pc, cc);
     }

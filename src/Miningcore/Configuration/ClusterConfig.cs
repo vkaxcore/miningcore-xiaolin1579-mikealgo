@@ -664,13 +664,13 @@ public partial class EquihashCoinTemplate : CoinTemplate
 public partial class ErgoCoinTemplate : CoinTemplate
 {
     [EnumMember(Value = "none")]
-    None
+    None,
 }
 
 public enum CryptonoteSubfamily
 {
     [EnumMember(Value = "none")]
-    None
+    None,
 }
 
 public enum CryptonightHashType

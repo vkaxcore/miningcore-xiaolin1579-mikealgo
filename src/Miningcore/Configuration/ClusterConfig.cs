@@ -663,8 +663,6 @@ public partial class EquihashCoinTemplate : CoinTemplate
 
 public partial class ErgoCoinTemplate : CoinTemplate
 {
-    [EnumMember(Value = "none")]
-    None,
 }
 
 public enum CryptonoteSubfamily

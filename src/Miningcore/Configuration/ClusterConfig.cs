@@ -40,9 +40,6 @@ public enum CoinFamily
     [EnumMember(Value = "ethereum")]
     Ethereum,
     
-    [EnumMember(Value = "handshake")]
-    Handshake,
-        
     [EnumMember(Value = "kaspa")]
     Kaspa,
 
@@ -137,6 +134,12 @@ public abstract partial class CoinTemplate
     public string Telegram { get; set; }
 
     /// <summary>
+    /// Github Link
+    /// </summary>
+    [JsonProperty(Order = -9)]
+    public string Github { get; set; }
+
+    /// <summary>
     /// Arbitrary extension data
     /// </summary>
     [JsonExtensionData]
@@ -156,7 +159,6 @@ public abstract partial class CoinTemplate
         {CoinFamily.Equihash, typeof(EquihashCoinTemplate)},
         {CoinFamily.Ergo, typeof(ErgoCoinTemplate)},
         {CoinFamily.Ethereum, typeof(EthereumCoinTemplate)},
-        {CoinFamily.Handshake, typeof(BitcoinTemplate)},
         {CoinFamily.Kaspa, typeof(KaspaCoinTemplate)},
         {CoinFamily.Nexa, typeof(BitcoinTemplate)},
         {CoinFamily.Progpow, typeof(ProgpowCoinTemplate)},
@@ -228,13 +230,28 @@ public partial class BitcoinTemplate : CoinTemplate
     public bool HasFounderFee { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+	public bool HasFounderReward { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public bool HasMinerFund { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool HasCoinbaseDevReward { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool HasProofOfGameplayAddress { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool HasDevFundAddress { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public bool HasCommunityAddress { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public bool HasFoundation { get; set; }
+
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+    public bool HasFounderValue { get; set; }
 
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
     [DefaultValue(1.0d)]

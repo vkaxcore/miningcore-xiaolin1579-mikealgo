@@ -231,7 +231,6 @@ public enum EthereumNetworkType
     EtherGem = 1987,
     PowBlocks = 12300,
     SlayerX = 1,
-    OctaSpaceTestnet = 800002,
     Hypra = 622277,
 
     Unknown = -1,
@@ -261,7 +260,6 @@ public enum GethChainType
     EtherGem = 1987,
     PowBlocks = 12300,
     SlayerX = 9119,
-    OctaSpaceTestnet,
     Hypra,
     
     Unknown = -1,

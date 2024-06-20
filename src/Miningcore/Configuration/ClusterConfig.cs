@@ -422,9 +422,6 @@ public enum CryptonightHashType
     [EnumMember(Value = "cn-xao")]
     CryptonightXAO,
 
-    [EnumMember(Value = "flex")]
-    Flex,
-
     [EnumMember(Value = "gr")]
     Ghostrider,
 

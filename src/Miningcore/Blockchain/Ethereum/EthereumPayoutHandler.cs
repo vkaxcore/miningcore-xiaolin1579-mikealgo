@@ -503,7 +503,6 @@ public class EthereumPayoutHandler : PayoutHandlerBase,
                 return SlayerXConstants.BaseRewardInitial - (SlayerXConstants.BaseRewardInitial * (SlayerXConstants.StakePercent / 100));
             
             case GethChainType.OctaSpace:
-            case GethChainType.OctaSpaceTestnet:
                 if(height >= OctaSpaceConstants.TriangulumHardForkHeight)
                     return OctaSpaceConstants.TriangulumBlockReward;
                 if(height >= OctaSpaceConstants.VegaHardForkHeight)

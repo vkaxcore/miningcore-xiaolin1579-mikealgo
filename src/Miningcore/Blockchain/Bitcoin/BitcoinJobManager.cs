@@ -100,39 +100,6 @@ public class BitcoinJobManager : BitcoinJobManagerBase<BitcoinJob>
         } while(await timer.WaitForNextTickAsync(ct));
     }
 
-    protected override async Task EnsureDaemonsSynchedAsync(CancellationToken ct)
-    {
-        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(5));
-
-        var syncPendingNotificationShown = false;
-
-        do
-        {
-            var response = await rpc.ExecuteAsync<BlockTemplate>(logger,
-                BitcoinCommands.GetBlockTemplate, ct, GetBlockTemplateParams());
-
-            var isSynched = response.Error == null;
-
-            if(isSynched)
-            {
-                logger.Info(() => "All daemons synched with blockchain");
-                break;
-            }
-            else
-            {
-                logger.Debug(() => $"Daemon reports error: {response.Error?.Message}");
-            }
-
-            if(!syncPendingNotificationShown)
-            {
-                logger.Info(() => "Daemon is still syncing with network. Manager will be started once synced.");
-                syncPendingNotificationShown = true;
-            }
-
-            await ShowDaemonSyncProgressAsync(ct);
-        } while(await timer.WaitForNextTickAsync(ct));
-    }
-
     protected async Task<RpcResponse<BlockTemplate>> GetBlockTemplateAsync(CancellationToken ct)
     {
         var result = await rpc.ExecuteAsync<BlockTemplate>(logger,

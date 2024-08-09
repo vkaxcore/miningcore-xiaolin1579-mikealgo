@@ -254,7 +254,7 @@ public enum GethChainType
     Canxium = 3003,
     Rethereum = 622277,
     Bitnet = 210,
-    OctaSpace = 800001,
+    OctaSpace ,
     RedeV2 = 1972,
     EtherChain = 11777,
     EtherGem = 1987,

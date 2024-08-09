@@ -460,7 +460,7 @@ public class EthereumPayoutHandler : PayoutHandlerBase,
                     return OctaSpaceConstants.OldenburgBlockReward;
                 if(height >= OctaSpaceConstants.ArcturusHardForkHeight)
                     return OctaSpaceConstants.ArcturusBlockReward;
-
+                
                return OctaSpaceConstants.BaseRewardInitial;
 
 			case GethChainType.RedeV2:
